@@ -7,13 +7,14 @@ import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Info;
+import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeException;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import com.owlike.genson.Genson;
 
 @Contract(
-        name = "CertificateRepositoryContract",
+        name = "cert-repo",
         info = @Info(
                 title = "CertRepo Contract",
                 description = "A Sample Certificate Repository chaincode example",
@@ -27,6 +28,7 @@ public class CertificateContract implements ContractInterface {
 		CERT_NOT_FOUND, CERT_ALREADY_EXISTS
 	}
 	
+	@Transaction()
 	public BirthCertificate addNewBirthCertificate(final Context ctx, final String id, final String firstName, final String lastName, final String hospitalName, final String city, final String dateOfBirth) {
 		
 		ChaincodeStub stub = ctx.getStub();
@@ -49,6 +51,7 @@ public class CertificateContract implements ContractInterface {
 		return certificate;
 	}
 	
+	@Transaction()
 	public BirthCertificate queryBirthCertificateById(final Context ctx, final String id) {
 		ChaincodeStub stub = ctx.getStub();
         String certificateState = stub.getStringState(id);
@@ -63,6 +66,7 @@ public class CertificateContract implements ContractInterface {
         return certificate;	
 	}
 	
+	@Transaction()
 	public BirthCertificate updateBirthCertificate(final Context ctx, final String id, final String firstName, final String lastName) {
 		ChaincodeStub stub = ctx.getStub();
         String certificateState = stub.getStringState(id);
