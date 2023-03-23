@@ -54,11 +54,11 @@ public class CertificateContract implements ContractInterface {
 			}
 		}
 		
-		String randomId = generateRandomId();
+		// String randomId = generateRandomId();
 		
-		BirthCertificate certificate = new BirthCertificate(randomId, firstName, lastName, dateOfBirth, hospitalName, city);
+		BirthCertificate certificate = new BirthCertificate(id, firstName, lastName, dateOfBirth, hospitalName, city);
 		certificateState = genson.serialize(certificate);
-		stub.putStringState(randomId, certificateState);
+		stub.putStringState(id, certificateState);
 		
 		return certificate;
 	}
