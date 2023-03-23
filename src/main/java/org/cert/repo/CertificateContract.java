@@ -29,6 +29,18 @@ public class CertificateContract implements ContractInterface {
 	}
 	
 	@Transaction()
+    public void initLedger(final Context ctx) {
+    	
+        ChaincodeStub stub = ctx.getStub();
+        
+        BirthCertificate cert1 = new BirthCertificate("1", "Naresh", "Sharma", "01-01-2019", "Ruby Hall Clinic", "Pune");
+        stub.putStringState("1", genson.serialize(cert1));
+        
+        BirthCertificate cert2 = new BirthCertificate("2", "Amit", "Singh", "11-08-2004", "AIMS", "Delhi");
+        stub.putStringState("2", genson.serialize(cert2));
+    }
+	
+	@Transaction()
 	public BirthCertificate addNewBirthCertificate(final Context ctx, final String id, final String firstName, final String lastName, final String hospitalName, final String city, final String dateOfBirth) {
 		
 		ChaincodeStub stub = ctx.getStub();
@@ -57,7 +69,7 @@ public class CertificateContract implements ContractInterface {
         String certificateState = stub.getStringState(id);
         
         if (certificateState.isEmpty()) {
-            String errorMessage = String.format("Certificate %s does not exist", id);
+            String errorMessage = String.format("Certificate %s does not exist - %s", id, certificateState);
             System.out.println(errorMessage);
             throw new ChaincodeException(errorMessage, CertRepoErrors.CERT_NOT_FOUND.toString());
         }
